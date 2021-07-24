@@ -9,3 +9,8 @@ Install dependencies: npm install or yarn
 Start the server: npm run start or yarn start
 
 Views are on: localhost:3000
+
+
+NB:If you’re on a Windows machine, set it to true – this converts LF endings into CRLF when you check out code:
+
+$ git config --global core.autocrlf true

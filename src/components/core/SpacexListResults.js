@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import Avatar from '@material-ui/core/Avatar';
+import { makeStyles } from '@material-ui/styles';
+
 import {
   Box,
   Button,
@@ -16,7 +19,26 @@ import {
 } from '@material-ui/core';
 import Popup from './Popups';
 import Graphpopup from './Graphpopup';
+import wiki from './static/img/wiki.png';
+import reddit from './static/img/reddit.png';
+import spacex from './static/img/spacex.jpg';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+  small: {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+  },
+  large: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+  },
+}));
 const SpacexListResults = () => {
   const [open, setOpen] = useState(false);
   const [graphopen, setGraphopen] = useState(false);
@@ -45,6 +67,7 @@ const SpacexListResults = () => {
   const preventDefault = (e) => {
     e.stopPropagation();
   };
+  const classes = useStyles();
 
   return (
     <div>
@@ -53,7 +76,7 @@ const SpacexListResults = () => {
           variant="contained"
           onClick={(e) => handleClickLaunchpads(e)}
         >
-          LAUNCH SITES
+          Launch Pads
         </Button>
       </Box>
       <Card>
@@ -62,6 +85,11 @@ const SpacexListResults = () => {
             <Table>
               <TableHead>
                 <TableRow>
+                  <TableCell>
+                    <Typography style={{ fontWeight: 600 }}>
+                      ID
+                    </Typography>
+                  </TableCell>
                   <TableCell>
                     <Typography style={{ fontWeight: 600 }}>
                       Title
@@ -79,12 +107,7 @@ const SpacexListResults = () => {
                   </TableCell>
                   <TableCell>
                     <Typography style={{ fontWeight: 600 }}>
-                      Event date unix
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography style={{ fontWeight: 600 }}>
-                      Event date utc
+                      Date and Time
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -99,45 +122,35 @@ const SpacexListResults = () => {
                       style={{ cursor: 'pointer' }}
                     >
                       <TableCell>
+                        {customer.id}
+                      </TableCell>
+                      <TableCell>
                         {customer.title}
                       </TableCell>
                       <TableCell>
                         {customer.flight_number}
                       </TableCell>
                       <TableCell href={customer.links.reddit}>
-                        <Box
-                          sx={{
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Box
-                            color="textPrimary"
-                          >
-                            <Tooltip title="Open link in new tab" onMouseEnter={(e) => preventDefault(e)}>
-                              <a href={customer.links.reddit} rel="noopener noreferrer" target="_blank" onClick={(e) => preventDefault(e)}>Reddit</a>
-                            </Tooltip>
-                          </Box>
-                          <Box
-                            color="textPrimary"
-                          >
-                            <Tooltip title="Open link in new tab" onMouseEnter={(e) => preventDefault(e)}>
-                              <a href={customer.links.article} rel="noopener noreferrer" target="_blank" onClick={(e) => preventDefault(e)}>Article</a>
-                            </Tooltip>
-                          </Box>
-                          <Box
-                            color="textPrimary"
-                          >
-                            <Tooltip title="Open link in new tab" onMouseEnter={(e) => preventDefault(e)}>
-                              <a href={customer.links.wikipedia} rel="noopener noreferrer" target="_blank" onClick={(e) => preventDefault(e)}>Wiki</a>
-                            </Tooltip>
-                          </Box>
-                        </Box>
+                        <div className={classes.root}>
+                          <Tooltip title="Reddit link">
+                            <a href={customer.links.reddit} rel="noopener noreferrer" target="_blank" onClick={(e) => preventDefault(e)}>
+                              <Avatar alt="Reddit" src={reddit} className={classes.small} />
+                            </a>
+                          </Tooltip>
+                          <Tooltip title="Sapcex article">
+                            <a href={customer.links.article} rel="noopener noreferrer" target="_blank" onClick={(e) => preventDefault(e)}>
+                              <Avatar alt="Article" src={spacex} className={classes.small} />
+                            </a>
+                          </Tooltip>
+                          <Tooltip title="Wiki">
+                            <a href={customer.links.wikipedia} rel="noopener noreferrer" target="_blank" onClick={(e) => preventDefault(e)}>
+                              <Avatar alt="Wiki" src={wiki} className={classes.small} />
+                            </a>
+                          </Tooltip>
+                        </div>
                       </TableCell>
                       <TableCell>
-                        {moment(customer.event_date_unix).format('DD-MMM-YYYY')}
-                      </TableCell>
-                      <TableCell>
-                        {moment(customer.event_date_utc).format('DD-MMM-YYYY')}
+                        {moment(customer.event_date_utc).format('DD-MMM-YYYY h:mm:ss a')}
                       </TableCell>
                     </TableRow>
                   </Tooltip>

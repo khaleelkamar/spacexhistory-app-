@@ -84,7 +84,7 @@ export default function CustomizedDialogs(props) {
     <div>
       <Dialog maxWidth="lg" aria-labelledby="customized-dialog-title" open={graphopen}>
         <DialogTitle id="customized-dialog-title">
-          LAUNCH SITES
+          LAUNCH PADS
         </DialogTitle>
         <DialogContent dividers>
           <BarChart
